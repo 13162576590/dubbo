@@ -41,3 +41,25 @@ firewall-cmd --reload
 查看已经开放的端口：
 
 firewall-cmd --list-ports
+
+4.mysql远程授权问题
+
+Mac用brew安装mysql，解决远程连接授权问题
+
+设置远程访问：
+
+1、mysql -u root -p
+
+2、grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;
+
+flush privileges;
+
+3、打开/usr/local/Cellar/mysql/5.7.16/下的homebrew.mxcl.mysql.plist文件，去掉
+
+--bind-address=127.0.0.1
+
+4、brew services stop mysql
+
+brew services start mysql
+
+
