@@ -75,31 +75,20 @@ LoadModule authz_svn_module   modules/mod_authz_svn.so
 这两行
 
 subversion.conf完整内容
+
 #必须
 LoadModule dav_svn_module     modules/mod_dav_svn.so    
 #必须
 LoadModule authz_svn_module   modules/mod_authz_svn.so
-
 <Location /repo>
-
 	DAV svn
-
 	SVNListParentPath on
-
 	SVNParentPath /svn
-
 	AuthType Basic
-
 	Satisfy Any
-
 	AuthName "Subversion repositories"
-
     AuthUserFile /svn/passwd.http       
-
     AuthzSVNAccessFile /svn/authz 
-
 	Require valid-user
-
 </Location>
-
 RedirectMatch ^(/svn)$ $1/
