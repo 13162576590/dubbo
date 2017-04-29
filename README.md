@@ -92,3 +92,18 @@ LoadModule authz_svn_module   modules/mod_authz_svn.so
 	Require valid-user
 </Location>
 RedirectMatch ^(/svn)$ $1/
+
+4.sonarqube集成出现问题
+
+eclipse:clean install sonar:sonar
+
+[WARNING] The requested profile "pom.xml" could not be activated because it does not exist.
+[ERROR] Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:3.3.0.603:sonar (default-cli) on project edu-common: SCM provider autodetection failed. Both git and svn claim to support this project. Please use sonar.scm.provider to define SCM of your project. -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+
+解决方案：登录sonarqube管理，找到SCM，设置为true
