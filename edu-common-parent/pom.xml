@@ -14,12 +14,12 @@
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://192.168.100.66:8081/nexus/content/repositories/releases/</url>
+            <url>http://192.168.1.110:8081/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://192.168.100.66:8081/nexus/content/repositories/snapshots/</url>
+            <url>http://192.168.1.110:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -31,12 +31,13 @@
         <edu-common-config.version>0.0.1-SNAPSHOT</edu-common-config.version>
         <edu-common-core.version>0.0.1-SNAPSHOT</edu-common-core.version>
         <edu-common-web.version>0.0.1-SNAPSHOT</edu-common-web.version>
-
+        <edu-web-boss.version>0.0.1-SNAPSHOT</edu-web-boss.version>
+        
         <edu-demo.version>1.0-SNAPSHOT</edu-demo.version>
         
         <!-- facade projects -->
         <!-- 用户服务接口 -->
-        <edu-facade-user.version>1.0-SNAPSHOT</edu-facade-user.version>
+        <edu-facade-user.version>0.0.1-SNAPSHOT</edu-facade-user.version>
         <!-- 账户服务接口 -->
         <edu-facade-account.version>1.0-SNAPSHOT</edu-facade-account.version>
         <!-- 订单服务接口 -->
@@ -48,7 +49,7 @@
         
         <!-- service projects -->
         <!-- 用户服务 -->
-        <edu-service-user.version>1.0-SNAPSHOT</edu-service-user.version>
+        <edu-service-user.version>0.0.1-SNAPSHOT</edu-service-user.version>
         <!-- 账户服务 -->
         <edu-service-account.version>1.0-SNAPSHOT</edu-service-account.version>
         <!-- 订单服务 -->
@@ -507,7 +508,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.7</version>
+                <version>2.8.2</version>
                 <configuration>
                     <uniqueVersion>false</uniqueVersion>
                 </configuration>
@@ -515,26 +516,26 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.8</version>
+                <version>2.10</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.6.1</version>
                 <configuration>
                     <failOnError>true</failOnError>
                     <verbose>true</verbose>
                     <fork>true</fork>
                     <compilerArgument>-nowarn</compilerArgument>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -543,6 +544,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <compilerVersion>${java-version}</compilerVersion>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
             </plugin>
         </plugins>
     </build>

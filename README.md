@@ -1,6 +1,25 @@
 # dubbo
 dubbo-serve
 
+端口规划：
+
+svn 9000  admin/admin
+
+sonarqube 9090  admin/admin
+
+nexus 8081  admin/admin123
+
+zookeeper 8080
+
+hudson 8082  admin/admin(装在性能较好机器)
+
+服务启动：
+service httpd start
+
+jdk版本：1.7
+
+消费者：只有在访问页面的情况下才注册到zookeeper注册中心
+
 注意点
 
 1.edu-service-user报错java.lang.ClassNotFoundException: org.springframework.web.context.ContextLoaderListener
@@ -107,3 +126,9 @@ eclipse:clean install sonar:sonar
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
 
 解决方案：登录sonarqube管理，找到SCM，设置为true
+
+[ERROR] SonarQube server [http://localhost:9090/sonarqube] can not be reached
+解决方案：登录sonarqube管理，找到SCM，设置为true
+System Configurations -> Sonar  
+Server URL	http://192.168.1.110:9090/sonarqube
+
