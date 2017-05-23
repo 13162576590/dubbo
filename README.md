@@ -3,13 +3,31 @@ dubbo-serve
 
 端口规划：
 
+linux1:
+
 svn 9000  admin/admin
 
-sonarqube 9090  admin/admin
+sonarqube 9090  admin/admin   /root/sonarqube-5.6.6/bin/linux-x86-64/sonar.sh start
 
 nexus 8081  admin/admin123
 
-zookeeper 8080
+fastDFS 22122
+
+linux2:
+
+zookeeper 2881
+
+dubbo-admin 8080 guest/guest
+
+dubbo-monitor/ 8020 guest/guest 防火墙未k
+
+activemq 8161、61616   admin/admin
+
+redis 6379 
+
+fastDFS 22122
+
+linux3:
 
 hudson 8082  admin/admin(装在性能较好机器)
 
@@ -19,6 +37,12 @@ service httpd start
 jdk版本：1.7
 
 消费者：只有在访问页面的情况下才注册到zookeeper注册中心
+
+svn授权
+
+# cd /svn
+# chown -R apache.apache wusc_edu
+# chmod -R 777 wusc_edu
 
 注意点
 
@@ -60,6 +84,12 @@ firewall-cmd --reload
 查看已经开放的端口：
 
 firewall-cmd --list-ports
+
+查询防火墙状态：firewall-cmd --state
+
+关闭防火墙：systemctl stop firewalld.service
+
+开启防火墙： systemctl start firewalld.service
 
 4.mysql远程授权问题
 
@@ -132,3 +162,25 @@ eclipse:clean install sonar:sonar
 System Configurations -> Sonar  
 Server URL	http://192.168.1.110:9090/sonarqube
 
+
+WrapperSimpleApp: Unable to locate the class org.sonar.application.App: java.lang.UnsupportedClassVersionError: org/sonar/application/App : Unsupported major.minor version 52.0
+
+sonarqube-5.6.6请使用jdk1.8，此处针对Linux
+cd sonarqube-5.6.6/conf 
+vi wrapper.conf 
+linux: 
+wrapper.java.command=/opt/jdk1.8.0_11/bin/java 
+
+5.fastDFS分布式文件系统
+
+ 启动 Tracker:
+# /etc/init.d/fdfs_trackerd start
+
+关闭 Tracker:
+# /etc/init.d/fdfs_trackerd stop
+
+启动 Storage:
+# /etc/init.d/fdfs_storaged start
+
+关闭 Storage:
+# /etc/init.d/fdfs_storaged stop
