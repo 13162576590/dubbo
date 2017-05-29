@@ -184,3 +184,47 @@ wrapper.java.command=/opt/jdk1.8.0_11/bin/java
 
 关闭 Storage:
 # /etc/init.d/fdfs_storaged stop
+
+6.redis
+./redis-trib create --replicas 1  192.168.1.114:7111 192.168.1.110:7112 192.168.1.111:7113 192.168.1.114:7114 192.168.1.110:7115 192.168.1.111:7116 
+
+7.keepalived启动失败问题
+[root@centos-linux-7 keepalived]# service keepalived start 
+Starting keepalived (via systemctl):  Job for keepalived.service failed because the control process exited with error code. See "systemctl status keepalived.service" and "journalctl -xe" for details.
+                                                           [FAILED]
+
+解决方案
+[root@centos-linux-7 init.d]# cd /usr/sbin/
+[root@centos-linux-7 sbin]# rm -f keepalived 
+[root@centos-linux-7 sbin]# cp /usr/local/keepalived/sbin/keepalived  /usr/sbin/
+[root@centos-linux-7 sbin]# service keepalived start 
+Starting keepalived (via systemctl):                       [  OK  ]
+[root@centos-linux-7 sbin]# 
+
+8.tracker  114  111
+http://192.168.1.114:8888/group1/M00/00/00/wKgBblkq-tmAbIQYAAVFOL7FJU4.tar.gz
+http://192.168.1.111:8888/group1/M00/00/00/wKgBblkq-tmAbIQYAAVFOL7FJU4.tar.gz
+
+http://192.168.1.111:8888/group1/M00/00/00/wKgBclkq_AmAAKKGAAVFOL7FJU4.tar.gz
+
+http://192.168.1.111:8888/group2/M00/00/00/wKgBb1krjwGAc3erAAVFOL7FJU4.tar.gz
+
+http://192.168.1.111:8888/group2/M00/00/00/wKgBb1krkPeAIucQAAVFOL7FJU4.tar.gz
+
+/etc/init.d/fdfs_storaged restart
+
+http://192.168.1.111:8888/group2/M00/00/00/wKgBb1kr0C-AfKQNAAVFOL7FJU4.tar.gz
+
+http://192.168.1.110:8888/group2/M00/00/00/wKgBb1kr0C-AfKQNAAVFOL7FJU4.tar.gz
+
+8.1 tracker_nginx
+/usr/local/tracker_nginx/sbin/ngnix
+
+http://192.168.1.114:8000/group2/M00/00/00/wKgBb1kr0C-AfKQNAAVFOL7FJU4.tar.gz
+http://192.168.1.111:8000/group2/M00/00/00/wKgBb1kr0C-AfKQNAAVFOL7FJU4.tar.gz
+
+8.2 virtual_ngnix
+
+./configure --prefix=/usr/local/virtual_ngnix
+
+netstat –apn | grep 88
