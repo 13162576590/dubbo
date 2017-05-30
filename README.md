@@ -228,3 +228,35 @@ http://192.168.1.111:8000/group2/M00/00/00/wKgBb1kr0C-AfKQNAAVFOL7FJU4.tar.gz
 ./configure --prefix=/usr/local/virtual_ngnix
 
 netstat –apn | grep 88
+
+9. web集群
+bank-receive-tomcat     7081
+boss-tomcat             7082
+gateway-tomcat          7083
+notify-receive-tomcat   7084
+portal-tomcat           7085
+shop-tomcat             7086
+trade-tomcat            7087
+dubbo-admin-tomcat      7088
+
+    ## web-boss
+    upstream web-boss {
+         server 192.168.1.114:7082 weight=1 max_fails=2 fail_timeout=30s;
+         server 192.168.1.101:7082 weight=1 max_fails=2 fail_timeout=30s;
+         server 192.168.1.110:7082 weight=1 max_fails=2 fail_timeout=30s;
+    }
+
+	## web-boss Cluster
+	location /pay-web-boss {
+	    root   html;
+	    index  index.html index.htm;
+	    proxy_pass  http://web-boss/pay-web-boss;
+	    proxy_set_header Host  $http_host;
+	    proxy_set_header Cookie $http_cookie;
+	    proxy_set_header X-Real-IP $remote_addr;
+	    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	    proxy_set_header X-Forwarded-Proto $scheme;
+	    client_max_body_size  100m;
+	}
+
+
