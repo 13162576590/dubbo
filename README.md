@@ -5,6 +5,14 @@ dubbo-serve
 
 linux1:
 
+httpd服务启动
+
+service httpd start 搜索启动
+
+service httpd restart 重新启动
+
+service httpd stop 停止服务
+
 svn 9000  admin/admin
 
 sonarqube 9090  admin/admin   /root/sonarqube-5.6.6/bin/linux-x86-64/sonar.sh start
