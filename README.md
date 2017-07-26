@@ -349,11 +349,14 @@ g.设置gitlab发信功能，需要注意一点：
 参考原链接： http://www.cnblogs.com/wenwei-blog/p/5861450.html
 
 安装过程中错误如下：
-   Error executing action `create` on resource 'user[GitLab user and group]'
+ (1).  Error executing action `create` on resource 'user[GitLab user and group]'
    报错图片见GitLab_01
 
 user['username'] = "git"；user['group'] = "git"修改为user['username'] = "gitlab"；user['group'] = "gitlab"再次gitlab-ctl reconfigure不报错了，然后执行gitlab-ctl restart
 
+(2).http://192.168.1.110:8082/  无法访问 防火墙是关闭的
+
+但是打开防火墙，相应的8082端口开放就可以访问，很奇怪
 
 
 
