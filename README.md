@@ -17,7 +17,7 @@ svn 9000  admin/admin
 
 sonarqube 9090  admin/admin   /root/sonarqube-5.6.6/bin/linux-x86-64/sonar.sh start
 
-nexus 8081  admin/admin123
+nexus 8081  admin/admin123   /root/nexus/nexus-2.11.2-03/bin 这很奇怪，把防火墙关闭，页面居然访问不了，打开防火墙，把8081端口开放居然可以访问了
 
 fastDFS 22122
 
@@ -105,7 +105,7 @@ Mac用brew安装mysql，解决远程连接授权问题
 
 设置远程访问：
 
-(1)、mysql -u root -p
+(1)、mysql -u root -p  ip:192.168.1.110 123
 
 (2)、grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;
 
@@ -239,13 +239,15 @@ netstat –apn | grep 88
 
 9. web集群
 bank-receive-tomcat     7081
-boss-tomcat             7082
+boss-tomcat             7082   7072  7092
 gateway-tomcat          7083
 notify-receive-tomcat   7084
 portal-tomcat           7085
 shop-tomcat             7086
 trade-tomcat            7087
 dubbo-admin-tomcat      7088
+jenkins-admin-tomcat    7089
+
 
     ## web-boss
     upstream web-boss {
@@ -266,5 +268,95 @@ dubbo-admin-tomcat      7088
 	    proxy_set_header X-Forwarded-Proto $scheme;
 	    client_max_body_size  100m;
 	}
+
+10.添加服务开机启动
+
+a、进入/etc/init.d目录命令:cd /etc/init.d
+
+b、拷贝nexus命令:cp /usr/local/nexus/nexus-2.11.1-01/bin/nexus ./nexus 、3、赋权命令:chmod 755 /etc/init.d/nexus
+
+c、添加服务命令:chkconfig --add nexus
+
+d、设置开机启动命令:chkconfig --levels 345 nexus on 
+
+e、然后我们进行编辑/etc/init.d下的nexu文件命令:vim /etc/init.d/nexus
+修改如下内容:
+RUN_AS_USER=root NEXUS_HOME="/usr/local/nexus/nexus-2.11.1-01" PIDDIR="${NEXUS_HOME}"
+
+f、进行编辑nexus安装目录下的wrapper.conf文件命令:
+vim /usr/local/nexus/nexus-2.11.1-01/bin/jsw/conf/wrapper.conf 注意修改jdk文件路径:wrapper.java.command=/usr/local/jdk1.7/bin/java
+
+g、最后我们执行:service nexus start (restart、stop) 
+
+h、Reboot重启服务，开机时我们发现nexus服务自动已启动!
+
+11.GitLab安装配置
+
+a. 安装依赖软件
+
+yum -y install policycoreutils openssh-server openssh-clients postfix
+
+b.设置postfix开机自启，并启动，postfix支持gitlab发信功能
+
+systemctl enable postfix && systemctl start postfix
+
+c.下载gitlab安装包，然后安装
+
+centos 7系统的下载地址:https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7
+
+wget https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/gitlab-ce-8.0.0-ce.0.el7.x86_64.rpm
+
+rpm -i gitlab-ce-8.0.0-ce.0.el7.x86_64.rpm
+
+d.修改gitlab配置文件指定服务器ip和自定义端口：
+
+vim  /etc/gitlab/gitlab.rb
+
+修改external_url: http://192.168.1.110:8082/  
+
+e.重置并启动GitLab
+
+执行：
+
+gitlab-ctl reconfigure
+
+gitlab-ctl restart
+
+f.访问 GitLab页面
+
+初始账户: root 密码: 5iveL!fe
+
+第一次登录修改密码
+
+g.设置gitlab发信功能，需要注意一点：
+
+发信系统用的默认的postfix，smtp是默认开启的，两个都启用了，两个都不会工作。
+
+我这里设置关闭smtp，开启postfix
+
+关闭smtp方法：vim /etc/gitlab/gitlab.rb
+
+找到#gitlab_rails['smtp_enable'] = true 改为 gitlab_rails['smtp_enable'] = false
+
+修改后执行gitlab-ctl reconfigure
+
+另一种是关闭postfix，设置开启smtp，相关教程请参考官网https://doc.gitlab.cc/omnibus/settings/smtp.html
+
+测试是否可以邮件通知：
+
+登录并添加一个用户，我这里使用qq邮箱添加一个用户
+
+参考原链接： http://www.cnblogs.com/wenwei-blog/p/5861450.html
+
+安装过程中错误如下：
+   Error executing action `create` on resource 'user[GitLab user and group]'
+   报错图片见GitLab_01
+
+user['username'] = "git"；user['group'] = "git"修改为user['username'] = "gitlab"；user['group'] = "gitlab"再次gitlab-ctl reconfigure不报错了，然后执行gitlab-ctl restart
+
+
+
+
+
 
 
