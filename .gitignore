@@ -1,5 +1,7 @@
 /target
 /pay/*/target
 /pay/*/.git
+/pay/.git
+.DS_Store
 node_modules/
 /edu-demo/*/target
