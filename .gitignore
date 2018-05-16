@@ -1,0 +1,5 @@
+/target
+/pay/*/target
+/pay/*/.git
+node_modules/
+/edu-demo/*/target
