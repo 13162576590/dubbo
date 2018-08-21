@@ -1,0 +1,71 @@
+一、pay-web-boss#1.根据用户名查找，表TBL_BOSS_PMS_OPERATOR用户表
+select * from TBL_BOSS_PMS_OPERATOR #用户表
+where LOGINNAME = 'admin';
+
+select * from TBL_BOSS_PMS_ROLE_OPERATOR 
+where OPERATORID = 1;
+
+select * from TBL_BOSS_PMS_ROLE_ACTION #角色与功能授权表
+where ROLEID in (1);
+
+
+SELECT 
+    D.ID AS 'id',
+    D.VERSION AS 'version',
+    D.ACTIONNAME AS 'actionName',
+    D.ACTION AS 'action',
+    D.REMARK AS 'remark',
+    D.CREATETIME AS 'createTime',
+    D.MENUID AS 'menu.id',
+    M.NAME AS 'menu.name'
+FROM
+    TBL_BOSS_PMS_ACTION D #功能表（boss:cardBin:view） action
+        LEFT JOIN
+    TBL_BOSS_PMS_MENU M #菜单表
+    ON D.MENUID = M.ID
+WHERE
+    D.ID IN (SELECT 
+            ACTIONID
+        FROM
+            TBL_BOSS_PMS_ROLE_ACTION
+        WHERE
+            ROLEID IN (1));
+
+select * from TBL_BOSS_PMS_ROLE_OPERATOR 
+where OPERATORID = 1;    #PmsOperator的id
+
+
+#菜单权限wusc.edu.pay.web.permission.action.PmsLoginAction.buildOperatorPermissionMenu(PmsOperator)
+SELECT DISTINCT
+    *
+FROM
+    (SELECT 
+        M.ID AS 'id',
+            M.VERSION AS 'version',
+            M.PARENTID AS 'pId',
+            M.NAME AS 'name',
+            M.ISLEAF AS 'isLeaf',
+            M.LEVEL AS 'level',
+            M.URL AS 'url',
+            M.TARGETNAME AS 'targetName',
+            M.NUMBER AS number
+    FROM
+        TBL_BOSS_PMS_ROLE R  #角色表
+    LEFT JOIN TBL_BOSS_PMS_ROLE_MENU RM #角色菜单表
+    ON R.ID = RM.ROLEID
+    LEFT JOIN TBL_BOSS_PMS_MENU M #菜单表
+    ON RM.MENUID = M.ID
+    WHERE
+        R.ID IN ('1')) AS MT #PmsRoleOperator.getRoleId（）
+ORDER BY MT.number ASC;
+
+
+
+
+        
+
+        
+        
+
+
+
