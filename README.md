@@ -359,6 +359,21 @@ user['username'] = "git"；user['group'] = "git"修改为user['username'] = "git
 但是打开防火墙，相应的8082端口开放就可以访问，很奇怪
 
 
+12.单点登录证书生成
+
+生成证书：
+
+keytool -genkey -alias tomcat -keyalg RSA -keystore /Users/PC/keys/keystore 
+
+导出证书：
+
+keytool -export -alias tomcat -keystore /Users/PC/keys/keystore -file /Users/PC/keys/tomcat.cer
+
+导入证书：
+
+sudo keytool -import -keystore "/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/jre/lib/security/cacerts" -file /Users/PC/keys/tomcat.cer -alias tomcat 
+
+
 
 
 
